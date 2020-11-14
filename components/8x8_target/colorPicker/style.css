@@ -1,0 +1,154 @@
+.color-picker-body * {
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+    transition-delay: 0s !important;
+}
+
+.color-picker-body {
+    /* background: rgba(255, 255, 255, .1); */
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    overflow: hidden;
+    transform: scale(.85);
+    margin: -15px;
+}
+
+.color-picker-body .container-ColorPicker {
+    background: #fff;
+    width: 320px;
+    height: 128px;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 16px;
+    z-index: 1;
+    overflow: hidden;
+    /*box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);*/
+  border: 1px rgba(0, 0, 0, .1) solid;
+}
+
+body .container-ColorPicker .blueSub,
+body .container-ColorPicker .redSub,
+body .container-ColorPicker .greenSub,
+body .container-ColorPicker .orangeSub {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    margin-top: 24px;
+}
+
+/* blue red green orange */
+body .container-ColorPicker .blueSub {
+    background: rgba(0, 168, 255, 0.2);
+    margin-left: 24px;
+    margin-top: 24px;
+}
+
+body .container-ColorPicker .redSub {
+    background: rgba(255, 96, 95, 0.2);
+    margin-left: 24px;
+    margin-top: 24px;
+}
+
+body .container-ColorPicker .greenSub {
+    background: rgba(150, 209, 0, 0.2);
+    margin-left: 120px;
+    opacity: 0;
+}
+
+body .container-ColorPicker .orangeSub {
+    background: rgba(208, 102, 10, 0.2);
+    margin-left: 216px;
+    opacity: 0;
+}
+
+body .container-ColorPicker .blue,
+body .container-ColorPicker .red,
+body .container-ColorPicker .green,
+body .container-ColorPicker .orange {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    z-index: 2;
+    position: absolute;
+    overflow: hidden;
+}
+
+body .container-ColorPicker .blue {
+    background: #00a8ff;
+    margin-left: 32px;
+    margin-top: 32px;
+}
+
+body .container-ColorPicker .blue:hover {
+    cursor: pointer;
+}
+
+body .container-ColorPicker .red {
+    background: #ff605f;
+    margin-left: 32px;
+    margin-top: 32px;
+}
+
+body .container-ColorPicker .red:hover {
+    cursor: pointer;
+}
+
+body .container-ColorPicker .green {
+    background: #96d100;
+    margin-top: 32px;
+    margin-left: 128px;
+}
+
+body .container-ColorPicker .green:hover {
+    cursor: pointer;
+}
+
+body .container-ColorPicker .orange {
+    background: #ff8e42;
+    margin-top: 32px;
+    margin-left: 224px;
+}
+
+body .container-ColorPicker .orange:hover {
+    cursor: pointer;
+}
+
+.colorName,
+.hex,
+.rgb {
+    opacity: 0;
+    position: absolute;
+}
+
+.colorName {
+    font-size: 26px;
+    margin-top: 9px;
+    left: 16px;
+    transition: .3s ease-in-out !important;
+    opacity: 0;
+}
+
+.hex {
+    margin-top: 12px;
+    right: 16px;
+}
+
+.rgb {
+    margin-top: 80px;
+    right: 16px;
+}
+#generateButton {
+  position: absolute;
+  bottom: 30px;
+  width: 272px;
+}
