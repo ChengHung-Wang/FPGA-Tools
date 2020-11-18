@@ -41,7 +41,7 @@
                             <!-- Output -->
                             <div class="col-xs-12" style="height:20px;"></div>
                             <div>
-                                <pre id="_output_g" class="prettyprint lang-c"></pre>
+                                <pre class="prettyprint lang-js" id="_output_g"></pre>
                             </div>
                         </div>
                     </div>

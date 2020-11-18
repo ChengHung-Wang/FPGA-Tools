@@ -85,14 +85,17 @@ function updateCode() {
 	let bytes = generateByteArray_r();
 	// console.log(bytes);
 	let output = "const uint_8 data[] =\n{\n\t" + bytes + "\n};"
-	$('#_output_r').html(output);
+	// $('#_output_r').html(output);
+	$('#_output_r').html(bytes);
 	$('#_output_r').removeClass('prettyprinted');
 	prettyPrint();
 	let bytes2 = generateByteArray_g();
 	// console.log(bytes2);
 	let output2 = "const uint_8 data[] =\n{\n\t" + bytes2 + "\n};"
-	$('#_output_g').html(output2);
+	// $('#_output_g').html(output2);
+	$('#_output_g').html(bytes2);
 	$('#_output_g').removeClass('prettyprinted');
+	prettyPrint();
 }
 
 function generateByteArray_r() {
