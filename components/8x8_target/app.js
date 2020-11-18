@@ -216,14 +216,14 @@ function generateByteArray_g() {
 
 // by my self fuck function
 function toggle(e) {
-	if (e.buttons == 1 && !e.metaKey) {
+	if (e.buttons == 1 && !e.ctrlKey) {
 		toggleRemove($(this));
 		toggleAdd($(this));
 		return;
 	}
-	if (e.buttons == 2 || (e.buttons == 1 && (e.metaKey || e.ctrlKey))) {
+	if (e.buttons == 2 || (e.buttons == 1 && e.ctrlKey)) {
 		console.log('double action');
-		let hasDraw = (!e.metaKey || !e.ctrlKey) && doubleDraw($(this));
+		let hasDraw = !e.ctrlKey && doubleDraw($(this));
 		toggleRemove($(this));
 		if (hasDraw)
 			toggleAdd($(this));
