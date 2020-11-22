@@ -11,8 +11,26 @@ $(function () {
 	matrix_g = JSON.parse(JSON.stringify(cache));
 	updateTable();
 	initOptions();
+	init_restore();
 	updateCode();
 });
+// -- fuck this function
+function init_restore() {
+	if(localStorage.getItem("matrix_r") != null && localStorage.getItem("matrix_g") != null) {
+		matrix_r = JSON.parse(localStorage.getItem("matrix_r"));
+		matrix_g = JSON.parse(localStorage.getItem("matrix_g"));
+		for(let row_index = 0; row_index < matrix_r.length; row_index ++ ){
+			for(let col_index = 0; col_index < matrix_r[0].length; col_index ++) {
+				if(matrix_r[col_index][row_index] == 1 && matrix_g[col_index][row_index] == 1)
+					$($($("tr")[row_index]).children()[col_index]).addClass("on").addClass("on-orange");
+				else if(matrix_r[col_index][row_index] == 1 && matrix_g[col_index][row_index] != 1)
+					$($($("tr")[row_index]).children()[col_index]).addClass("on").addClass("on-red");
+				else if(matrix_g[col_index][row_index] == 1 && matrix_r[col_index][row_index] != 1)
+					$($($("tr")[row_index]).children()[col_index]).addClass("on").addClass("on-green");
+			}
+		}
+	}
+}
 function updateTable() {
 	var width = matrix_r[0].length;
 	var height = matrix_r.length;
@@ -23,22 +41,29 @@ function updateTable() {
 	// events
 	$table.on("mousedown", "td", toggle);
 	$table.on("mouseenter", "td", toggle);
+	$table.on("mouseenter", "td", toggle);
+	$table.on("mouseup", "td", toggle);
 	$table.on("dragstart", function () { return false; });
 }
 
 function initOptions() {
 	$('#clearButton').click(function () {
-		matrix_r = createArray(matrix_r.length, matrix_r[0].length);
+		let cache = createArray(8, 8);
+		matrix_r = cache;
+		matrix_g = JSON.parse(JSON.stringify(cache));
+		localStorage.setItem("matrix_r", JSON.stringify(matrix_r));
+		localStorage.setItem("matrix_g", JSON.stringify(matrix_g));
 		updateTable();
-		matrix_g = matrix_r;
+		location.reload();
 	});
 	$('#generateButton').click(updateCode);
 
 	$('#widthDropDiv li a').click(function () {
 		var width = parseInt($(this).html());
 		var height = matrix_r.length;
-		matrix_r = createArray(height, width);
-		matrix_g = matrix_r;
+		let cache = createArray(8, 8);
+		matrix_r = cache;
+		matrix_g = JSON.parse(JSON.stringify(cache));
 		updateTable();
 		updateSummary();
 	});
@@ -108,7 +133,8 @@ function generateByteArray_r() {
 	var temp;
 
 	// {{ sb version switch }}
-	let sb_ver = true;
+	let sb_ver = false;
+	localStorage.setItem("matrix_r", JSON.stringify(matrix_r));
 
 	// console.log(matrix_r);
 	for (var x = 0; x < width; x++) {
@@ -144,10 +170,10 @@ function generateByteArray_r() {
 	}
 	let formatted = "";
 	if(sb_ver) {
-		matrix_g.forEach((row, row_index) => {
+		matrix_r.forEach((row, row_index) => {
 			row.forEach((col, col_index) => {
 				if(col == 1) {
-					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_g(${row_index})(${col_index}) <= '1'`;
+					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_r(${col_index})(${row_index}) <= '1';`;
 				}
 			})
 		})
@@ -169,10 +195,11 @@ function generateByteArray_g() {
 	var buffer = new Array(width * height);
 	var bytes = new Array((width * height) / 8);
 	// {{ sb version switch }}
-	let sb_ver = true;
+	let sb_ver = false;
 	// Column Major
 	var temp;
 	// console.log(matrix_g);
+	localStorage.setItem("matrix_g", JSON.stringify(matrix_g));
 	for (var x = 0; x < width; x++) {
 		for (var y = 0; y < height; y++) {
 			temp = matrix_g[y][x];
@@ -209,7 +236,7 @@ function generateByteArray_g() {
 		matrix_g.forEach((row, row_index) => {
 			row.forEach((col, col_index) => {
 				if(col == 1) {
-					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_g(${row_index})(${col_index}) <= '1'`;
+					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_g(${col_index})(${row_index}) <= '1'`;
 				}
 			})
 		})
