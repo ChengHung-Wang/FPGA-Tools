@@ -12,9 +12,33 @@
     <script type="text/javascript" src="8x8_target/prettify/prettify.js"></script>
     <script src="8x8_target/app.js"></script> <!-- for DotMatrixTool js -->
     <script src="8x8_target/colorPicker/main.js"></script>
+    <script>
+        let hex_code = "";
+        let binary_code = "";
+        function copyText(text) {
+            console.log(text);
+            $("#hide_copy_code").val(text);
+            $("#hide_copy_code")[0].select();
+            document.execCommand("copy"); // 執行瀏覽器複製命令
+            $("#copy_success_alert").alert();
+        }
+    </script>
 </head>
 <body>
 <?php include "../includes/navbar.php"; ?>
+<div class="container position-fixed" style="left: 50%; transform: translate(-50%, 0%); z-index: 9999999999">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade hide" id="copy_success_alert" role="alert" style="margin-top: 180px;z-index: 999999999999">
+                <strong>Copy Success!!!</strong> 快貼到VSCode裡去
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="text" id="hide_copy_code" style="display: none;">
 <div class="container-fluid">
     <div class="row">
         <div class="col-2 bd-sidebar d-flex justify-content-center align-items-start" style="border-right: 1px #ddd solid; top: 0; min-height: 100vh; flex-wrap: wrap">

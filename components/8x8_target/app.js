@@ -71,8 +71,9 @@ function initOptions() {
 	$('#heightDropDiv li a').click(function () {
 		var width = matrix_r[0].length;
 		var height = parseInt($(this).html());
-		matrix_r = createArray(height, width);
-		matrix_g = matrix_r;
+		let cache = createArray(8, 8);
+		matrix_r = cache;
+		matrix_g = JSON.parse(JSON.stringify(cache));
 		updateTable();
 		updateSummary();
 	});
@@ -109,18 +110,39 @@ function updateSummary() {
 function updateCode() {
 	let bytes = generateByteArray_r();
 	// console.log(bytes);
-	let output = "const uint_8 data[] =\n{\n\t" + bytes + "\n};"
+	// let output = "const uint_8 data[] =\n{\n\t" + bytes + "\n};"
 	// $('#_output_r').html(output);
-	$('#_output_r').html(bytes);
+	// ex => dot_data_r <= (x"02", x"02", x"fc", x"14", x"18", x"28", x"48", x"50");
+	// $('#_output_r').html(`dot_data_g <= (${bytes})\n`);
+	// $('#_output_r').removeClass('prettyprinted');
+	// prettyPrint();
+	// let bytes2 = generateByteArray_g();
+	// // console.log(bytes2);
+	// let output2 = "const uint_8 data[] =\n{\n\t" + bytes2 + "\n};"
+	// $('#_output_r').html(`dot_data_r <= (${bytes2})`);
+	// $('#_output_g').removeClass('prettyprinted');
+
+	// {{ 2020-11-22 fuck remake }}
+	// hex
+	let html = `dot_data_r <= (${generateByteArray_g()});\ndot_data_g <= (${generateByteArray_r()});`;
+	$('#_output_r').html(html);
 	$('#_output_r').removeClass('prettyprinted');
 	prettyPrint();
-	let bytes2 = generateByteArray_g();
-	// console.log(bytes2);
-	let output2 = "const uint_8 data[] =\n{\n\t" + bytes2 + "\n};"
-	// $('#_output_g').html(output2);
-	$('#_output_g').html(bytes2);
+	hex_code = html; // garbage coding style
+
+
+	// {{ 2020-11-22 fuck remake }}
+	// binary
+	let binary = `dot_data_r <= (\n\t"`;
+	binary = binary + matrix_g.map(e => e.map(el => el != 1 ? 0 : 1).join("")).join('", \n\t"');
+	binary = binary + '"\n);\ndot_data_g <= (\n\t"';
+
+	binary = binary + matrix_r.map(e => e.map(el => el != 1 ? 0 : 1).join("")).join('", \n\t"');
+	binary = binary + '"\n);';
+	$("#_output_g").html(binary);
 	$('#_output_g').removeClass('prettyprinted');
 	prettyPrint();
+	binary_code = binary;
 }
 
 function generateByteArray_r() {
@@ -137,9 +159,16 @@ function generateByteArray_r() {
 	localStorage.setItem("matrix_r", JSON.stringify(matrix_r));
 
 	// console.log(matrix_r);
+
+	// bug fix
+	let cache = JSON.parse(JSON.stringify(matrix_r));
+	cache.reverse();
+
+
+
 	for (var x = 0; x < width; x++) {
 		for (var y = 0; y < height; y++) {
-			temp = matrix_r[y][x];
+			temp = cache[y][x];
 			if (!temp) temp = 0;
 			// Row Major or Column Major?
 			if (!rowMajor) {
@@ -200,9 +229,13 @@ function generateByteArray_g() {
 	var temp;
 	// console.log(matrix_g);
 	localStorage.setItem("matrix_g", JSON.stringify(matrix_g));
-	for (var x = 0; x < width; x++) {
+
+	// bug fix
+	let cache = JSON.parse(JSON.stringify(matrix_g));
+	cache.reverse();
+ 	for (var x = 0; x < width; x++) {
 		for (var y = 0; y < height; y++) {
-			temp = matrix_g[y][x];
+			temp = cache[y][x];
 			if (!temp) temp = 0;
 			// Row Major or Column Major?
 			if (!rowMajor) {

@@ -32,14 +32,18 @@
                     <div class="row">
                         <div class="col-6" style="border: 1px rgba(0, 0, 0, .1) solid;">
                             <!-- Output -->
-                            <div class="col-xs-12" style="height:20px;"></div>
+                            <div class="col-xs-12" style="margin: 15px 0; text-align: left;">
+                                <input type="button" class="btn btn-outline-dark btn-sm" value="copy hex VHDL code" onclick="copyText(hex_code)">
+                            </div>
                             <div>
                                 <pre id="_output_r" class="prettyprint lang-c"></pre>
                             </div>
                         </div>
                         <div class="col-6" style="border: 1px rgba(0, 0, 0, .1) solid;">
                             <!-- Output -->
-                            <div class="col-xs-12" style="height:20px;"></div>
+                            <div class="col-xs-12" style="margin: 15px 0; text-align: left;">
+                                <input type="button" class="btn btn-outline-dark btn-sm" value="copy binary VHDL code" onclick="copyText(binary_code)">
+                            </div>
                             <div>
                                 <pre class="prettyprint lang-js" id="_output_g"></pre>
                             </div>
