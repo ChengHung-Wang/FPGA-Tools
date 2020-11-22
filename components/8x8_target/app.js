@@ -106,6 +106,10 @@ function generateByteArray_r() {
 
 	// Column Major
 	var temp;
+
+	// {{ sb version switch }}
+	let sb_ver = true;
+
 	// console.log(matrix_r);
 	for (var x = 0; x < width; x++) {
 		for (var y = 0; y < height; y++) {
@@ -138,13 +142,24 @@ function generateByteArray_r() {
 		}
 		bytes[i / 8] = newByte;
 	}
-	var formatted = bytes.map(function (x) {
-		x = x + 0xFFFFFFFF + 1;  // twos complement
-		x = x.toString(16); // to hex
-		x = ("0" + x).substr(-2); // zero-pad to 8-digits
-		x = `x"${x}"`;
-		return x;
-	}).join(', ');
+	let formatted = "";
+	if(sb_ver) {
+		matrix_g.forEach((row, row_index) => {
+			row.forEach((col, col_index) => {
+				if(col == 1) {
+					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_g(${row_index})(${col_index}) <= '1'`;
+				}
+			})
+		})
+	}else {
+		formatted = bytes.map(function (x) {
+			x = x + 0xFFFFFFFF + 1;  // twos complement
+			x = x.toString(16); // to hex
+			x = ("0" + x).substr(-2); // zero-pad to 8-digits
+			x = `x"${x}"`;
+			return x;
+		}).join(', ');
+	}
 
 	return formatted;
 }
@@ -153,7 +168,8 @@ function generateByteArray_g() {
 	var height = matrix_g.length;
 	var buffer = new Array(width * height);
 	var bytes = new Array((width * height) / 8);
-
+	// {{ sb version switch }}
+	let sb_ver = true;
 	// Column Major
 	var temp;
 	// console.log(matrix_g);
@@ -188,14 +204,24 @@ function generateByteArray_g() {
 		}
 		bytes[i / 8] = newByte;
 	}
-	var formatted = bytes.map(function (x) {
-		x = x + 0xFFFFFFFF + 1;  // twos complement
-		x = x.toString(16); // to hex
-		x = ("0" + x).substr(-2); // zero-pad to 8-digits
-		x = `x"${x}"`;
-		return x;
-	}).join(', ');
-
+	let formatted = "";
+	if(sb_ver) {
+		matrix_g.forEach((row, row_index) => {
+			row.forEach((col, col_index) => {
+				if(col == 1) {
+					formatted = `${formatted != "" ? formatted + "\n" : ""}dot_data_g(${row_index})(${col_index}) <= '1'`;
+				}
+			})
+		})
+	}else {
+		formatted = bytes.map(function (x) {
+			x = x + 0xFFFFFFFF + 1;  // twos complement
+			x = x.toString(16); // to hex
+			x = ("0" + x).substr(-2); // zero-pad to 8-digits
+			x = `x"${x}"`;
+			return x;
+		}).join(', ');
+	}
 	return formatted;
 }
 
@@ -216,14 +242,14 @@ function generateByteArray_g() {
 
 // by my self fuck function
 function toggle(e) {
-	if (e.buttons == 1 && !e.metaKey) {
+	if (e.buttons == 1 && !e.ctrlKey) {
 		toggleRemove($(this));
 		toggleAdd($(this));
 		return;
 	}
-	if (e.buttons == 2 || (e.buttons == 1 && (e.metaKey || e.ctrlKey))) {
+	if (e.buttons == 2 || (e.buttons == 1 && e.ctrlKey)) {
 		console.log('double action');
-		let hasDraw = (!e.metaKey || !e.ctrlKey) && doubleDraw($(this));
+		let hasDraw = !e.ctrlKey && doubleDraw($(this));
 		toggleRemove($(this));
 		if (hasDraw)
 			toggleAdd($(this));
